@@ -36,7 +36,7 @@ jobs:
       - name: Find mac build artifact
         id: find_artifact
         run: |
-          FILE=$(find dist -type f -name '*.dmg' -o -name '*.zip' | head -n 1)
+          FILE=$(find dist -type f \( -name '*.dmg' -o -name '*.zip' \) | head -n 1)
           echo "artifact=$FILE" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
