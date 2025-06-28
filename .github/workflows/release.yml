@@ -1,0 +1,49 @@
+name: Build & Release macOS App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Generate release tag
+        id: tag
+        run: |
+          TAG="v$(date +'%Y%m%d%H%M%S')"
+          echo "tag_name=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Build mac app
+        run: pnpm run build:mac
+
+      - name: Find mac build artifact
+        id: find_artifact
+        run: |
+          FILE=$(find dist -type f -name '*.dmg' -o -name '*.zip' | head -n 1)
+          echo "artifact=$FILE" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          name: Release ${{ steps.tag.outputs.tag_name }}
+          files: ${{ steps.find_artifact.outputs.artifact }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
