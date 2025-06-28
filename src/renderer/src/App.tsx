@@ -4,6 +4,8 @@ import './assets/main.css'
 function App(): React.JSX.Element {
   const [items, setItems] = useState<string[]>([])
   const [inputValue, setInputValue] = useState('')
+  const [toastVisible, setToastVisible] = useState(false)
+  const [toastOpacity, setToastOpacity] = useState(1)
 
   useEffect(() => {
     const storedItems = localStorage.getItem('listItems')
@@ -28,7 +30,19 @@ function App(): React.JSX.Element {
   }
 
   const handleCopy = (item: string): void => {
-    navigator.clipboard.writeText(item).catch((err) => console.error('Failed to copy: ', err))
+    navigator.clipboard
+      .writeText(item)
+      .then(() => {
+        setToastVisible(true)
+        setToastOpacity(1)
+        setTimeout(() => {
+          setToastOpacity(0)
+        }, 1000)
+        setTimeout(() => {
+          setToastVisible(false)
+        }, 1200)
+      })
+      .catch((err) => console.error('Failed to copy: ', err))
   }
 
   const handleDelete = (index: number): void => {
@@ -88,6 +102,11 @@ function App(): React.JSX.Element {
           </div>
         ))}
       </div>
+      {toastVisible && (
+        <div className="toast" style={{ opacity: toastOpacity }}>
+          复制成功
+        </div>
+      )}
     </div>
   )
 }

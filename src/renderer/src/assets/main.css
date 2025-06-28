@@ -51,6 +51,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #222;
 }
 
 .item-actions {
@@ -89,4 +90,21 @@ body {
 
 .list-container::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  background: rgba(60, 60, 60, 0.95);
+  color: #fff;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s;
 }

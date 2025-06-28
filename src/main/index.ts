@@ -14,6 +14,10 @@ function createWindow(): void {
     height: 405,
     show: false,
     autoHideMenuBar: true,
+    frame: false,
+    resizable: false,
+    movable: false,
+    skipTaskbar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -21,8 +25,8 @@ function createWindow(): void {
     }
   })
 
-  mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+  mainWindow.on('blur', () => {
+    mainWindow.hide()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -65,6 +69,11 @@ app.whenReady().then(() => {
     if (mainWindow.isVisible()) {
       mainWindow.hide()
     } else {
+      const trayBounds = tray.getBounds()
+      const windowBounds = mainWindow.getBounds()
+      const x = Math.round(trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2)
+      const y = Math.round(trayBounds.y + trayBounds.height)
+      mainWindow.setPosition(x, y)
       mainWindow.show()
     }
   })
