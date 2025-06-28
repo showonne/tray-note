@@ -33,17 +33,17 @@ jobs:
       - name: Build mac app
         run: pnpm run build:mac
 
-      - name: Find mac build artifact
+      - name: Find mac build artifacts
         id: find_artifact
         run: |
-          FILE=$(find dist -type f \( -name '*.dmg' -o -name '*.zip' \) | head -n 1)
-          echo "artifact=$FILE" >> $GITHUB_OUTPUT
+          FILES=$(find dist -type f \( -name '*.dmg' -o -name '*.zip' \) | xargs)
+          echo "artifacts=$FILES" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.tag_name }}
           name: Release ${{ steps.tag.outputs.tag_name }}
-          files: ${{ steps.find_artifact.outputs.artifact }}
+          files: ${{ steps.find_artifact.outputs.artifacts }}
         env:
           GITHUB_TOKEN: ${{ secrets.TRAY_NOTE_RELEASE_TOKEN }}
