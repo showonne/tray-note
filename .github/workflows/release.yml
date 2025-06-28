@@ -46,4 +46,4 @@ jobs:
           name: Release ${{ steps.tag.outputs.tag_name }}
           files: ${{ steps.find_artifact.outputs.artifact }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TRAY_NOTE_RELEASE_TOKEN }}
