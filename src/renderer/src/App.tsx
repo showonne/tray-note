@@ -40,6 +40,10 @@ function App(): React.JSX.Element {
         }, 1000)
         setTimeout(() => {
           setToastVisible(false)
+          // 在toast展示结束后自动隐藏窗口
+          if (window.api && window.api.hideWindow) {
+            window.api.hideWindow()
+          }
         }, 1200)
       })
       .catch((err) => console.error('Failed to copy: ', err))

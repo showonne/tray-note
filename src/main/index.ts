@@ -84,6 +84,13 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  // Handle hide window request from renderer
+  ipcMain.on('hide-window', () => {
+    if (mainWindow) {
+      mainWindow.hide()
+    }
+  })
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
