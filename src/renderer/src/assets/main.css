@@ -34,6 +34,7 @@ body {
 
 .list-container {
   flex-grow: 1;
+  overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
 }
@@ -44,6 +45,34 @@ body {
   justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #eee;
+  min-width: 0;
+}
+
+.list-item_dragging {
+  opacity: 0.85;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  z-index: 1;
+}
+
+.list-item-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  padding: 4px;
+  cursor: grab;
+  color: #999;
+  border-radius: 4px;
+  touch-action: none;
+}
+
+.list-item-drag-handle:active {
+  cursor: grabbing;
+}
+
+.list-item-drag-handle:hover {
+  color: #666;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .item-text {
